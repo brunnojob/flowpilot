@@ -1,0 +1,29 @@
+# Post every new entry of an RSS/Atom feed to a Telegram channel.
+# The first poll only records existing entries (initial: skip) to avoid a flood.
+name: rss-to-telegram
+description: Mirror an RSS feed into a Telegram channel, one post per new entry.
+tags: [rss, telegram]
+trigger:
+  type: feed
+  url: https://hnrss.org/best
+  interval: 900
+  initial: skip
+
+steps:
+  - id: summary
+    type: html_to_text           # custom step from examples/plugins/text_tools.py
+    with:
+      html_text: "{{ trigger.entry.summary }}"
+      max_length: 280
+
+  - id: post
+    type: telegram
+    retry: { attempts: 3, delay: 10 }
+    with:
+      chat_id: "{{ env.TELEGRAM_CHANNEL or env.TELEGRAM_CHAT_ID }}"
+      disable_preview: false
+      text: |
+        📰 <b>{{ trigger.entry.title | e }}</b>
+        {{ steps.summary.output | e }}
+
+        <a href="{{ trigger.entry.link }}">Read more</a>

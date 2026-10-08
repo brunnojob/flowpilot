@@ -1,0 +1,48 @@
+# Watch GitHub repositories and post new releases to Telegram.
+# Uses persistent state so each release is announced exactly once.
+name: github-release-watcher
+description: Post new GitHub releases of the repositories you follow to Telegram.
+tags: [github, telegram]
+trigger:
+  type: cron
+  cron: "*/30 * * * *"
+
+vars:
+  repos:
+    - astral-sh/uv
+    - astral-sh/ruff
+    - fastapi/fastapi
+    - pydantic/pydantic
+
+steps:
+  - id: releases
+    type: http
+    for_each: "{{ vars.repos }}"
+    continue_on_error: true        # one missing repo must not break the others
+    timeout: 30
+    retry: { attempts: 3, delay: 2, backoff: 2 }
+    with:
+      url: "https://api.github.com/repos/{{ item }}/releases/latest"
+      headers:
+        Accept: application/vnd.github+json
+        Authorization: "{{ 'Bearer ' ~ env.GITHUB_TOKEN if env.GITHUB_TOKEN else '' }}"
+
+  - id: announce
+    type: telegram
+    for_each: "{{ steps.releases.results }}"
+    # `if` is evaluated per item: only releases we have not announced yet.
+    if: "{{ item.ok and item.output.json.tag_name != (state.tags or {}).get(item.item) }}"
+    with:
+      text: |
+        🚀 <b>{{ item.item }}</b> released <b>{{ item.output.json.tag_name | e }}</b>
+        {{ (item.output.json.name or '') | e }}
+
+        {{ item.output.json.html_url }}
+
+  - id: remember
+    type: state
+    for_each: "{{ steps.releases.results | selectattr('ok') | list }}"
+    with:
+      merge:
+        tags:
+          "{{ item.item }}": "{{ item.output.json.tag_name }}"

@@ -1,0 +1,17 @@
+# POST any JSON to http://127.0.0.1:8080/hooks/echo and get it back.
+#   curl -X POST localhost:8080/hooks/echo -H 'content-type: application/json' -d '{"msg": "hi"}'
+name: webhook-echo
+description: Echo a webhook payload back to the caller.
+trigger:
+  type: webhook
+  path: echo
+  methods: [POST]
+  wait: true   # respond with the run result instead of 202 Accepted
+
+steps:
+  - id: echo
+    type: transform
+    with:
+      value:
+        received: "{{ trigger.body }}"
+        at: "{{ now().isoformat() }}"

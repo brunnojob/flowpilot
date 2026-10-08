@@ -1,0 +1,7 @@
+# Settings for the example project:  flowpilot -p examples serve
+workflows_dir: workflows
+database: .flowpilot/flowpilot.db
+port: 8080
+allow_shell: false
+plugins:
+  - plugins.text_tools   # custom steps: html_to_text, slugify

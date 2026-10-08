@@ -1,0 +1,14 @@
+.git
+.github
+.venv
+**/__pycache__
+**/.flowpilot
+.pytest_cache
+.mypy_cache
+.ruff_cache
+dist
+build
+docs
+tests
+*.egg-info
+.env

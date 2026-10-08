@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>flowpilot — self-hosted workflow automation with first-class Telegram support</title>
+  <meta name="description" content="A lightweight, self-hosted, code-first workflow automation engine in Python. YAML workflows, cron, webhooks, RSS, retries, a live dashboard and first-class Telegram support. Runs on a $5 VPS or a Raspberry Pi." />
+  <meta property="og:title" content="flowpilot — automations as code" />
+  <meta property="og:description" content="Lightweight self-hosted workflow automation in Python with first-class Telegram support." />
+  <meta property="og:image" content="https://mrzroot.github.io/flowpilot/assets/screenshots/overview-dark.webp" />
+  <meta property="og:url" content="https://mrzroot.github.io/flowpilot/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <style>
+    :root {
+      --bg: #f6f7fb; --bg2: #ffffff; --card: #ffffff; --line: rgba(15,23,42,.09);
+      --text: #0f172a; --text2: #475569; --muted: #8590a3;
+      --accent: #7c3aed; --accent2: #06b6d4;
+      --grad: linear-gradient(135deg, #8b5cf6 0%, #6366f1 45%, #22d3ee 100%);
+      --code-bg: #0d1117; --code-text: #d6deeb;
+      --shadow: 0 30px 80px -30px rgba(30, 27, 75, .35);
+      --glow: radial-gradient(800px 400px at 70% 0%, rgba(139,92,246,.18), transparent 60%), radial-gradient(700px 400px at 0% 30%, rgba(34,211,238,.14), transparent 60%);
+      --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+      --fa: "Vazirmatn", "Vazir", "Shabnam", Tahoma, "Segoe UI", sans-serif;
+      --mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #07090e; --bg2: #0c0f16; --card: #10141d; --line: rgba(255,255,255,.08);
+        --text: #e8ebf3; --text2: #a7b0c2; --muted: #6c768c; --accent: #a78bfa;
+        --shadow: 0 40px 100px -30px rgba(0,0,0,.9);
+        --glow: radial-gradient(800px 400px at 70% 0%, rgba(139,92,246,.22), transparent 60%), radial-gradient(700px 400px at 0% 30%, rgba(34,211,238,.12), transparent 60%);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; overflow-x: clip; }
+    body { margin: 0; overflow-x: clip; font-family: var(--sans); color: var(--text); background: var(--bg); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    html[lang="fa"] body { font-family: var(--fa); }
+    a { color: inherit; text-decoration: none; }
+    code, pre { font-family: var(--mono); }
+    .wrap { width: min(1160px, 100% - 40px); margin-inline: auto; }
+    .hero-bg { background: var(--glow); }
+
+    nav { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(14px); background: color-mix(in srgb, var(--bg) 75%, transparent); border-bottom: 1px solid var(--line); }
+    nav .wrap { display: flex; align-items: center; gap: 22px; height: 64px; }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 750; font-size: 18px; letter-spacing: -.02em; }
+    .logo img { width: 30px; height: 30px; border-radius: 9px; box-shadow: 0 8px 20px -8px rgba(124,58,237,.7); }
+    .links { display: flex; gap: 20px; margin-inline-start: auto; color: var(--text2); font-size: 14.5px; font-weight: 500; }
+    .links a:hover { color: var(--text); }
+    .btn { display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 18px; border-radius: 12px; font-weight: 650; font-size: 15px; border: 1px solid var(--line); background: var(--card); color: var(--text); cursor: pointer; transition: transform .1s, filter .15s, border-color .15s; font-family: inherit; }
+    .btn:hover { border-color: var(--muted); }
+    .btn:active { transform: translateY(1px); }
+    .btn.primary { background: var(--grad); color: #fff; border: 0; box-shadow: 0 14px 30px -14px rgba(99,102,241,.9); }
+    .btn.primary:hover { filter: brightness(1.08); }
+    .btn.sm { height: 36px; padding: 0 13px; font-size: 13.5px; border-radius: 10px; }
+    .btn svg { width: 17px; height: 17px; }
+
+    header.hero { padding: 84px 0 40px; text-align: center; }
+    .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); font-size: 13px; color: var(--text2); font-weight: 550; }
+    .pill b { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    h1 { font-size: clamp(38px, 6.2vw, 72px); line-height: 1.04; letter-spacing: -.045em; margin: 22px auto 18px; max-width: 900px; font-weight: 800; }
+    html[lang="fa"] h1 { letter-spacing: 0; line-height: 1.35; }
+    h1 .grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .lead { font-size: clamp(17px, 2vw, 20px); color: var(--text2); max-width: 720px; margin: 0 auto 30px; }
+    .cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .install { margin: 26px auto 0; display: inline-flex; align-items: center; gap: 12px; padding: 10px 10px 10px 18px; border-radius: 14px; background: var(--code-bg); color: var(--code-text); font-family: var(--mono); font-size: 14px; max-width: 100%; overflow-x: auto; direction: ltr; }
+    .install .p { color: #7fdbca; user-select: none; }
+    .install code { white-space: nowrap; overflow-x: auto; min-width: 0; }
+    .copy { flex: none; height: 32px; padding: 0 12px; border-radius: 9px; border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.06); color: #cbd5e1; cursor: pointer; font-family: var(--sans); font-size: 12.5px; }
+    .copy:hover { background: rgba(255,255,255,.12); }
+
+    .shot { margin: 56px auto 0; max-width: 1100px; border-radius: 18px; padding: 10px; background: linear-gradient(180deg, color-mix(in srgb, var(--card) 90%, transparent), transparent); border: 1px solid var(--line); box-shadow: var(--shadow); position: relative; }
+    .shot::before { content: ""; position: absolute; inset: -40px -40px auto; height: 300px; background: var(--grad); filter: blur(90px); opacity: .18; z-index: -1; border-radius: 50%; }
+    .shot img { width: 100%; height: auto; display: block; border-radius: 11px; border: 1px solid var(--line); }
+    .dots { display: flex; gap: 6px; padding: 4px 6px 10px; }
+    .dots i { width: 11px; height: 11px; border-radius: 50%; background: #ff5f57; }
+    .dots i:nth-child(2) { background: #febc2e; } .dots i:nth-child(3) { background: #28c840; }
+
+    section { padding: 90px 0; }
+    .eyebrow { color: var(--accent); font-weight: 700; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
+    html[lang="fa"] .eyebrow { letter-spacing: 0; }
+    h2 { font-size: clamp(28px, 3.6vw, 42px); letter-spacing: -.03em; line-height: 1.15; margin: 10px 0 14px; }
+    html[lang="fa"] h2 { letter-spacing: 0; line-height: 1.4; }
+    .sub { color: var(--text2); font-size: 17.5px; max-width: 680px; margin: 0; }
+    .center { text-align: center; } .center .sub { margin-inline: auto; }
+
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 46px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 24px; transition: transform .15s, border-color .15s; }
+    .card:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); }
+    .card .ic { width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); margin-bottom: 16px; }
+    .card .ic svg { width: 22px; height: 22px; }
+    .card h3 { margin: 0 0 6px; font-size: 17.5px; letter-spacing: -.01em; }
+    .card p { margin: 0; color: var(--text2); font-size: 15px; }
+
+    .split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 48px; align-items: center; }
+    .steps { list-style: none; padding: 0; margin: 30px 0 0; display: grid; gap: 18px; counter-reset: s; }
+    .steps li { display: grid; grid-template-columns: 38px 1fr; gap: 14px; counter-increment: s; }
+    .steps li::before { content: counter(s); width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: var(--grad); color: #fff; font-weight: 800; }
+    .steps b { display: block; font-size: 16.5px; } .steps span { color: var(--text2); font-size: 15px; }
+    pre.code { margin: 0; background: var(--code-bg); color: var(--code-text); border-radius: 18px; padding: 22px 24px; overflow-x: auto; font-size: 13px; line-height: 1.7; box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.06); direction: ltr; text-align: left; }
+    .k { color: #c792ea; } .s { color: #ecc48d; } .c { color: #637777; font-style: italic; } .t { color: #7fdbca; } .n { color: #f78c6c; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; justify-content: center; }
+    .chip { padding: 7px 13px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); font-family: var(--mono); font-size: 13px; color: var(--text2); direction: ltr; }
+    .chip.t { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); }
+
+    .ex { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 46px; }
+    .ex .card { display: flex; flex-direction: column; gap: 10px; }
+    .ex .tag { align-self: flex-start; font-family: var(--mono); font-size: 12px; padding: 3px 10px; border-radius: 999px; background: color-mix(in srgb, var(--accent2) 14%, transparent); color: var(--accent2); direction: ltr; }
+    .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 46px; }
+    .gallery figure { margin: 0; } .gallery img { width: 100%; border-radius: 14px; border: 1px solid var(--line); box-shadow: var(--shadow); display: block; }
+    .gallery figcaption { color: var(--muted); font-size: 14px; margin-top: 10px; text-align: center; }
+
+    .band { background: var(--bg2); border-block: 1px solid var(--line); }
+    .tg { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 34px; }
+    .code.start { max-width: 760px; margin: 40px auto 0; }
+    footer { padding: 40px 0 60px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); }
+    footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    footer a:hover { color: var(--text); }
+
+    @media (max-width: 900px) {
+      .grid, .ex { grid-template-columns: 1fr 1fr; }
+      .split, .gallery, .tg { grid-template-columns: 1fr; }
+      .links { display: none; }
+      nav .wrap { justify-content: space-between; }
+    }
+    @media (max-width: 600px) { .grid, .ex { grid-template-columns: 1fr; } header.hero { padding-top: 56px; } }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="wrap">
+      <a class="logo" href="#"><img src="favicon.svg" alt="" />flowpilot</a>
+      <div class="links">
+        <a href="#features" data-i18n="nav.features">Features</a>
+        <a href="#how" data-i18n="nav.how">How it works</a>
+        <a href="#examples" data-i18n="nav.examples">Examples</a>
+        <a href="#start" data-i18n="nav.start">Get started</a>
+      </div>
+      <button class="btn sm" id="lang" type="button" aria-label="Switch language">فارسی</button>
+      <a class="btn sm" href="https://github.com/mrzroot/flowpilot">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.9 1.3 1.9 1.3 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5Z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </nav>
+
+  <div class="hero-bg">
+    <header class="hero wrap">
+      <span class="pill"><b>v0.1.0</b> <span data-i18n="hero.pill">open source · MIT · Python 3.10+</span></span>
+      <h1><span data-i18n="hero.h1a">Automations as code.</span><br /><span class="grad" data-i18n="hero.h1b">Tiny enough for a Raspberry Pi.</span></h1>
+      <p class="lead" data-i18n="hero.lead">flowpilot is a lightweight, self-hosted workflow engine. Describe triggers and steps in readable YAML, keep them in Git, and get retries, persistent state, a live dashboard and first-class Telegram support — in a single Python process.</p>
+      <div class="cta">
+        <a class="btn primary" href="#start" data-i18n="hero.cta1">Get started</a>
+        <a class="btn" href="https://github.com/mrzroot/flowpilot" data-i18n="hero.cta2">View on GitHub</a>
+      </div>
+      <div class="install"><span class="p">$</span><code id="install-cmd">pipx install "git+https://github.com/mrzroot/flowpilot.git"</code><button class="copy" data-copy="install-cmd" data-i18n="copy">Copy</button></div>
+      <div class="shot">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <picture>
+          <source srcset="assets/screenshots/overview-dark.webp" media="(prefers-color-scheme: dark)" />
+          <img src="assets/screenshots/overview-light.webp" alt="flowpilot dashboard overview" width="1600" height="1000" />
+        </picture>
+      </div>
+    </header>
+  </div>
+
+  <section id="features">
+    <div class="wrap center">
+      <div class="eyebrow" data-i18n="f.eyebrow">Features</div>
+      <h2 data-i18n="f.h2">Everything a small automation server needs</h2>
+      <p class="sub" data-i18n="f.sub">No Redis, no Postgres, no Node, no build step. Just Python, SQLite and your YAML files.</p>
+    </div>
+    <div class="wrap grid">
+      <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg></div><h3 data-i18n="f1.t">Code-first workflows</h3><p data-i18n="f1.d">YAML or Python files you can diff, review and version. flowpilot validate catches typos in step types and parameters before they run.</p></div>
+      <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></div><h3 data-i18n="f2.t">First-class Telegram</h3><p data-i18n="f2.d">Messages, files, photos and any Bot API method. Long messages are split automatically; use your own Bot API server or a proxy if needed.</p></div>
+      <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><h3 data-i18n="f3.t">Six trigger types</h3><p data-i18n="f3.d">Cron with time zones, intervals, webhooks with secrets or GitHub signatures, file watchers, RSS/Atom feeds and manual runs.</p></div>
+      <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><path d="M21 3v5h-5"/></svg></div><h3 data-i18n="f4.t">Reliable by default</h3><p data-i18n="f4.d">Per-step timeouts, retries with exponential backoff, on_failure handlers, concurrency limits and crash recovery.</p></div>
+      <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><h3 data-i18n="f5.t">Live dashboard</h3><p data-i18n="f5.d">Watch run logs stream in real time over SSE, browse history, trigger runs and toggle workflows — dark or light, on desktop or phone.</p></div>
+      <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.4 13.6a2 2 0 1 0 0-3.2V7a1 1 0 0 0-1-1h-3.4a2 2 0 1 0-3.2 0H8.4a1 1 0 0 0-1 1v3.4a2 2 0 1 0 0 3.2V17a1 1 0 0 0 1 1h3.4a2 2 0 1 1 3.2 0h3.4a1 1 0 0 0 1-1v-3.4Z"/></svg></div><h3 data-i18n="f6.t">Plugins in five lines</h3><p data-i18n="f6.d">Decorate a Python function with @step and use it in YAML, or ship steps as a package through entry points.</p></div>
+    </div>
+  </section>
+
+  <section id="how" class="band">
+    <div class="wrap split">
+      <div>
+        <div class="eyebrow" data-i18n="h.eyebrow">How it works</div>
+        <h2 data-i18n="h.h2">From idea to running automation in minutes</h2>
+        <p class="sub" data-i18n="h.sub">Each workflow is a trigger plus steps. Steps can reference earlier results, the trigger payload, environment secrets and persistent state through Jinja2 templates.</p>
+        <ol class="steps">
+          <li><div><b data-i18n="h.s1">Scaffold</b><span data-i18n="h.s1d">flowpilot init creates a project with example workflows.</span></div></li>
+          <li><div><b data-i18n="h.s2">Describe</b><span data-i18n="h.s2d">Write a trigger and steps in YAML; validate them statically.</span></div></li>
+          <li><div><b data-i18n="h.s3">Serve</b><span data-i18n="h.s3d">flowpilot serve starts triggers, the REST API and the dashboard.</span></div></li>
+        </ol>
+      </div>
+<pre class="code"><span class="c"># workflows/uptime-monitor.yaml</span>
+<span class="k">name</span>: uptime-monitor
+<span class="k">trigger</span>: { <span class="k">type</span>: interval, <span class="k">seconds</span>: <span class="n">120</span> }
+<span class="k">vars</span>:
+  <span class="k">sites</span>: [https://example.com, https://www.python.org]
+<span class="k">steps</span>:
+  - <span class="k">id</span>: check
+    <span class="k">type</span>: http
+    <span class="k">for_each</span>: <span class="s">"<span class="t">{{ vars.sites }}</span>"</span>
+    <span class="k">retry</span>: { <span class="k">attempts</span>: <span class="n">2</span>, <span class="k">delay</span>: <span class="n">3</span> }
+    <span class="k">continue_on_error</span>: <span class="n">true</span>
+    <span class="k">with</span>: { <span class="k">url</span>: <span class="s">"<span class="t">{{ item }}</span>"</span>, <span class="k">fail_on_error</span>: <span class="n">false</span> }
+
+  - <span class="k">id</span>: alert              <span class="c"># only when the status changes</span>
+    <span class="k">type</span>: telegram
+    <span class="k">for_each</span>: <span class="s">"<span class="t">{{ steps.check.results }}</span>"</span>
+    <span class="k">if</span>: <span class="s">"<span class="t">{{ (item.ok and item.output.ok) != (state.up or {}).get(item.item, true) }}</span>"</span>
+    <span class="k">with</span>:
+      <span class="k">text</span>: <span class="s">"🔔 <span class="t">{{ item.item }}</span> changed state"</span>
+
+  - <span class="k">id</span>: remember
+    <span class="k">type</span>: state
+    <span class="k">for_each</span>: <span class="s">"<span class="t">{{ steps.check.results }}</span>"</span>
+    <span class="k">with</span>: { <span class="k">merge</span>: { <span class="k">up</span>: { <span class="s">"<span class="t">{{ item.item }}</span>"</span>: <span class="s">"<span class="t">{{ item.ok and item.output.ok }}</span>"</span> } } }</pre>
+    </div>
+    <div class="wrap">
+      <div class="chips">
+        <span class="chip t">cron</span><span class="chip t">interval</span><span class="chip t">webhook</span><span class="chip t">file</span><span class="chip t">feed</span><span class="chip t">manual</span>
+        <span class="chip">http</span><span class="chip">telegram</span><span class="chip">email</span><span class="chip">transform</span><span class="chip">condition</span><span class="chip">branch</span><span class="chip">delay</span><span class="chip">log</span><span class="chip">python</span><span class="chip">shell</span><span class="chip">file.write</span><span class="chip">file.read</span><span class="chip">sqlite</span><span class="chip">state</span><span class="chip">archive</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="examples">
+    <div class="wrap center">
+      <div class="eyebrow" data-i18n="e.eyebrow">Examples</div>
+      <h2 data-i18n="e.h2">Real automations, ready to copy</h2>
+      <p class="sub" data-i18n="e.sub">Every example is validated in CI; the API-based ones use free public endpoints and need no keys.</p>
+    </div>
+    <div class="wrap ex">
+      <a class="card" href="https://github.com/mrzroot/flowpilot/blob/main/examples/workflows/github-release-watcher.yaml"><span class="tag">cron</span><h3 data-i18n="e1.t">GitHub release watcher</h3><p data-i18n="e1.d">Announce every new release of the repositories you follow — exactly once.</p></a>
+      <a class="card" href="https://github.com/mrzroot/flowpilot/blob/main/examples/workflows/uptime-monitor.yaml"><span class="tag">interval</span><h3 data-i18n="e2.t">Uptime monitor</h3><p data-i18n="e2.d">Get a Telegram alert when a site goes down, and another when it recovers.</p></a>
+      <a class="card" href="https://github.com/mrzroot/flowpilot/blob/main/examples/workflows/crypto-digest.yaml"><span class="tag">cron · Asia/Tehran</span><h3 data-i18n="e3.t">Daily price digest</h3><p data-i18n="e3.d">Crypto prices and exchange rates every morning at 09:00, with the Jalali date.</p></a>
+      <a class="card" href="https://github.com/mrzroot/flowpilot/blob/main/examples/workflows/rss-to-telegram.yaml"><span class="tag">feed</span><h3 data-i18n="e4.t">RSS → Telegram channel</h3><p data-i18n="e4.d">One clean channel post per new feed entry, no duplicates.</p></a>
+      <a class="card" href="https://github.com/mrzroot/flowpilot/blob/main/examples/workflows/nightly-backup.yaml"><span class="tag">cron</span><h3 data-i18n="e5.t">Nightly backup</h3><p data-i18n="e5.d">tar.gz archives with retention, uploaded to Telegram, with an alert on failure.</p></a>
+      <a class="card" href="https://github.com/mrzroot/flowpilot/blob/main/examples/workflows/contact-form.yaml"><span class="tag">webhook</span><h3 data-i18n="e6.t">Contact form</h3><p data-i18n="e6.d">Turn website form submissions into Telegram messages, protected by a secret.</p></a>
+    </div>
+    <div class="wrap gallery">
+      <figure><img src="assets/screenshots/run-detail-dark.webp" alt="Run detail with live logs" loading="lazy" /><figcaption data-i18n="g1">Step timeline, outputs and live logs for every run</figcaption></figure>
+      <figure><img src="assets/screenshots/workflow-detail-dark.webp" alt="Workflow detail" loading="lazy" /><figcaption data-i18n="g2">Pipeline view, definition and persistent state</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap center">
+      <div class="eyebrow" data-i18n="t.eyebrow">Made for Telegram</div>
+      <h2 data-i18n="t.h2">Built where Telegram is the default messenger</h2>
+      <p class="sub" data-i18n="t.sub">flowpilot was born in Mashhad, Iran, where most notifications end up in Telegram. That shows in the details.</p>
+    </div>
+    <div class="wrap tg">
+      <div class="card"><h3 data-i18n="t1.t">Works with restricted networks</h3><p data-i18n="t1.d">Point TELEGRAM_API_BASE at a self-hosted Bot API server or reverse proxy, or route requests through HTTPS_PROXY / SOCKS.</p></div>
+      <div class="card"><h3 data-i18n="t2.t">Persian-friendly templates</h3><p data-i18n="t2.d">The jalali filter formats Solar Hijri dates and fa_digits converts numbers to Persian digits.</p></div>
+      <div class="card"><h3 data-i18n="t3.t">Channels, groups and topics</h3><p data-i18n="t3.d">Send to users, groups, channels or forum topics; silent messages, HTML or MarkdownV2 with an escaping filter.</p></div>
+      <div class="card"><h3 data-i18n="t4.t">Files up to the Bot API limit</h3><p data-i18n="t4.d">Upload local files (like nightly backups) or send photos and documents by URL.</p></div>
+    </div>
+  </section>
+
+  <section id="start">
+    <div class="wrap center">
+      <div class="eyebrow" data-i18n="s.eyebrow">Get started</div>
+      <h2 data-i18n="s.h2">Up and running in three commands</h2>
+      <p class="sub" data-i18n="s.sub">Install straight from GitHub (it is not on PyPI), scaffold a project and open the dashboard.</p>
+    </div>
+<div class="wrap"><pre class="code start"><span class="c"># 1. install</span>
+pipx install <span class="s">"git+https://github.com/mrzroot/flowpilot.git"</span>
+
+<span class="c"># 2. create a project and try it</span>
+flowpilot init my-automations <span class="k">&amp;&amp;</span> cd my-automations
+flowpilot run hello
+
+<span class="c"># 3. serve the dashboard, API and triggers</span>
+flowpilot serve            <span class="c"># → http://127.0.0.1:8080</span>
+
+<span class="c"># or with Docker</span>
+git clone https://github.com/mrzroot/flowpilot <span class="k">&amp;&amp;</span> cd flowpilot
+mkdir project <span class="k">&amp;&amp;</span> docker compose up -d</pre></div>
+    <div class="wrap cta" style="margin-top:34px">
+      <a class="btn primary" href="https://github.com/mrzroot/flowpilot#-quick-start" data-i18n="s.cta1">Read the docs</a>
+      <a class="btn" href="https://github.com/mrzroot/flowpilot/releases" data-i18n="s.cta2">Download a release</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <span>MIT © 2026 <a href="https://github.com/mrzroot">Mohammadreza Zare</a> · <span data-i18n="footer">Built in Mashhad</span> 🇮🇷</span>
+      <span><a href="https://github.com/mrzroot/flowpilot">GitHub</a> · <a href="https://github.com/mrzroot/flowpilot/blob/main/CHANGELOG.md">Changelog</a> · <a href="https://github.com/mrzroot/flowpilot/blob/main/SECURITY.md">Security</a></span>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      const fa = {
+        "nav.features": "امکانات", "nav.how": "نحوهٔ کار", "nav.examples": "نمونه‌ها", "nav.start": "شروع",
+        "hero.pill": "متن‌باز · MIT · پایتون ۳٫۱۰ به بالا",
+        "hero.h1a": "اتوماسیون به‌شکل کد.", "hero.h1b": "آن‌قدر سبک که روی رزبری‌پای اجرا شود.",
+        "hero.lead": "flowpilot یک موتور گردش‌کار سبک و خودمیزبان است. تریگرها و گام‌ها را در YAML خوانا بنویسید، در گیت نگه دارید و تلاش مجدد، حالت ماندگار، داشبورد زنده و پشتیبانی کامل از تلگرام را در یک پروسهٔ پایتون داشته باشید.",
+        "hero.cta1": "شروع کنید", "hero.cta2": "مشاهده در گیت‌هاب", "copy": "کپی",
+        "f.eyebrow": "امکانات", "f.h2": "هر آنچه یک سرور اتوماسیون کوچک لازم دارد", "f.sub": "بدون Redis، بدون Postgres، بدون Node و بدون مرحلهٔ build. فقط پایتون، SQLite و فایل‌های YAML شما.",
+        "f1.t": "گردش‌کار کدمحور", "f1.d": "فایل‌های YAML یا پایتون که می‌توانید مقایسه، بازبینی و نسخه‌بندی کنید. دستور validate اشتباه در نوع گام‌ها و پارامترها را پیش از اجرا پیدا می‌کند.",
+        "f2.t": "تلگرام به‌عنوان شهروند درجه‌یک", "f2.d": "پیام، فایل، عکس و هر متد Bot API. پیام‌های طولانی خودکار تقسیم می‌شوند و در صورت نیاز می‌توانید از سرور Bot API شخصی یا پراکسی استفاده کنید.",
+        "f3.t": "شش نوع تریگر", "f3.d": "cron با منطقهٔ زمانی، بازه‌ای، وب‌هوک با رمز یا امضای گیت‌هاب، پایش فایل، خوراک RSS/Atom و اجرای دستی.",
+        "f4.t": "قابل‌اعتماد به‌صورت پیش‌فرض", "f4.d": "timeout برای هر گام، تلاش مجدد با backoff نمایی، گام‌های on_failure، محدودیت هم‌زمانی و بازیابی پس از خرابی.",
+        "f5.t": "داشبورد زنده", "f5.d": "لاگ اجراها را به‌صورت زنده ببینید، تاریخچه را مرور کنید، اجرای دستی بزنید و گردش‌کارها را فعال یا غیرفعال کنید؛ با تم روشن و تیره روی دسکتاپ و موبایل.",
+        "f6.t": "افزونه در پنج خط", "f6.d": "یک تابع پایتون را با @step تزئین کنید و در YAML استفاده کنید، یا گام‌ها را به‌صورت بسته از طریق entry point منتشر کنید.",
+        "h.eyebrow": "نحوهٔ کار", "h.h2": "از ایده تا اتوماسیون فعال در چند دقیقه", "h.sub": "هر گردش‌کار یک تریگر و چند گام است. گام‌ها از طریق قالب‌های Jinja2 به نتایج قبلی، دادهٔ تریگر، متغیرهای محیطی و حالت ماندگار دسترسی دارند.",
+        "h.s1": "ساخت پروژه", "h.s1d": "دستور flowpilot init یک پروژه با گردش‌کارهای نمونه می‌سازد.",
+        "h.s2": "توصیف", "h.s2d": "تریگر و گام‌ها را در YAML بنویسید و به‌صورت ایستا اعتبارسنجی کنید.",
+        "h.s3": "اجرا", "h.s3d": "دستور flowpilot serve تریگرها، REST API و داشبورد را راه‌اندازی می‌کند.",
+        "e.eyebrow": "نمونه‌ها", "e.h2": "اتوماسیون‌های واقعی، آمادهٔ استفاده", "e.sub": "همهٔ نمونه‌ها در CI اعتبارسنجی می‌شوند و نمونه‌های مبتنی بر API از سرویس‌های عمومی رایگان و بدون کلید استفاده می‌کنند.",
+        "e1.t": "اطلاع‌رسانی نسخه‌های گیت‌هاب", "e1.d": "هر نسخهٔ جدید مخازن موردعلاقه‌تان را دقیقاً یک بار اعلام کنید.",
+        "e2.t": "پایش در دسترس بودن", "e2.d": "وقتی سایتی از دسترس خارج شد هشدار بگیرید و وقتی برگشت هم باخبر شوید.",
+        "e3.t": "گزارش روزانهٔ قیمت", "e3.d": "قیمت رمزارزها و نرخ ارز هر روز ساعت ۹ صبح همراه با تاریخ شمسی.",
+        "e4.t": "RSS به کانال تلگرام", "e4.d": "برای هر مطلب جدید خوراک یک پست تمیز در کانال، بدون تکرار.",
+        "e5.t": "پشتیبان‌گیری شبانه", "e5.d": "آرشیو tar.gz با نگهداری نسخه‌های اخیر، ارسال به تلگرام و هشدار در صورت خطا.",
+        "e6.t": "فرم تماس", "e6.d": "پیام‌های فرم تماس وب‌سایت را با محافظت رمز به تلگرام بفرستید.",
+        "g1": "خط زمانی گام‌ها، خروجی‌ها و لاگ زندهٔ هر اجرا", "g2": "نمای پایپ‌لاین، تعریف و حالت ماندگار",
+        "t.eyebrow": "ساخته‌شده برای تلگرام", "t.h2": "ساخته‌شده جایی که تلگرام پیام‌رسان اصلی است", "t.sub": "flowpilot در مشهد متولد شد، جایی که بیشتر اعلان‌ها به تلگرام می‌رسند و این در جزئیات آن پیداست.",
+        "t1.t": "سازگار با شبکه‌های محدود", "t1.d": "متغیر TELEGRAM_API_BASE را به سرور Bot API شخصی یا reverse proxy بدهید، یا درخواست‌ها را از طریق HTTPS_PROXY یا SOCKS عبور دهید.",
+        "t2.t": "قالب‌های فارسی‌پسند", "t2.d": "فیلتر jalali تاریخ شمسی را قالب‌بندی می‌کند و fa_digits ارقام را فارسی می‌کند.",
+        "t3.t": "کانال، گروه و تاپیک", "t3.d": "ارسال به کاربر، گروه، کانال یا تاپیک‌های انجمن؛ پیام بی‌صدا، HTML یا MarkdownV2 با فیلتر escape.",
+        "t4.t": "ارسال فایل", "t4.d": "فایل‌های محلی (مثل پشتیبان شبانه) را آپلود کنید یا عکس و سند را با URL بفرستید.",
+        "s.eyebrow": "شروع", "s.h2": "راه‌اندازی با سه دستور", "s.sub": "مستقیم از گیت‌هاب نصب کنید (در PyPI منتشر نشده است)، یک پروژه بسازید و داشبورد را باز کنید.",
+        "s.cta1": "مطالعهٔ مستندات", "s.cta2": "دریافت نسخهٔ منتشرشده", "footer": "ساخته‌شده در مشهد",
+      };
+      const en = {};
+      document.querySelectorAll("[data-i18n]").forEach((el) => { en[el.dataset.i18n] = el.textContent; });
+      const btn = document.getElementById("lang");
+      function apply(lang) {
+        const dict = lang === "fa" ? fa : en;
+        document.documentElement.lang = lang;
+        document.documentElement.dir = lang === "fa" ? "rtl" : "ltr";
+        document.querySelectorAll("[data-i18n]").forEach((el) => { const v = dict[el.dataset.i18n]; if (v) el.textContent = v; });
+        btn.textContent = lang === "fa" ? "English" : "فارسی";
+        localStorage.setItem("flowpilot.lang", lang);
+      }
+      const q = new URLSearchParams(location.search).get("lang");
+      const initial = q || localStorage.getItem("flowpilot.lang") || ((navigator.language || "").startsWith("fa") ? "fa" : "en");
+      if (initial === "fa") apply("fa");
+      btn.addEventListener("click", () => apply(document.documentElement.lang === "fa" ? "en" : "fa"));
+      document.querySelectorAll("[data-copy]").forEach((b) => b.addEventListener("click", async () => {
+        const text = document.getElementById(b.dataset.copy).textContent;
+        try { await navigator.clipboard.writeText(text); } catch (_) { /* ignore */ }
+        const old = b.textContent; b.textContent = "✓"; setTimeout(() => { b.textContent = old; }, 1400);
+      }));
+    })();
+  </script>
+</body>
+</html>

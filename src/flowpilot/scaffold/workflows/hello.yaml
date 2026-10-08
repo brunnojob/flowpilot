@@ -1,0 +1,24 @@
+# The smallest useful workflow: run it with `flowpilot run hello`.
+name: hello
+description: Say hello and show how templates, transforms and state work.
+trigger: manual
+
+vars:
+  who: "{{ trigger.who or 'world' }}"
+
+steps:
+  - id: greeting
+    type: transform
+    with:
+      template: "Hello, {{ vars.who }}! This is run #{{ (state.count or 0) + 1 }}."
+
+  - id: log
+    type: log
+    with:
+      message: "{{ steps.greeting.output }}"
+
+  - id: remember
+    type: state
+    with:
+      set:
+        count: "{{ (state.count or 0) + 1 }}"

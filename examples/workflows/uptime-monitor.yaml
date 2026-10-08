@@ -1,0 +1,43 @@
+# Check websites every 2 minutes; alert only when a site goes down or recovers.
+name: uptime-monitor
+description: Alert on Telegram when a website goes down or comes back up.
+tags: [monitoring, telegram]
+trigger:
+  type: interval
+  seconds: 120
+
+vars:
+  sites:
+    - https://github.com
+    - https://www.python.org
+    - https://example.com
+
+steps:
+  - id: check
+    type: http
+    for_each: "{{ vars.sites }}"
+    continue_on_error: true
+    timeout: 20
+    retry: { attempts: 2, delay: 3 }
+    with:
+      url: "{{ item }}"
+      fail_on_error: false
+      timeout: 15
+
+  - id: alert
+    type: telegram
+    for_each: "{{ steps.check.results }}"
+    if: "{{ (item.ok and item.output.ok) != (state.up or {}).get(item.item, true) }}"
+    with:
+      text: >-
+        {% if item.ok and item.output.ok %}✅ <b>{{ item.item }}</b> is back up
+        ({{ item.output.status }}, {{ item.output.elapsed_ms }} ms){% else %}🔴 <b>{{ item.item }}</b>
+        is DOWN: {{ (item.error or ('HTTP ' ~ item.output.status)) | e }}{% endif %}
+
+  - id: remember
+    type: state
+    for_each: "{{ steps.check.results }}"
+    with:
+      merge:
+        up:
+          "{{ item.item }}": "{{ item.ok and item.output.ok }}"

@@ -1,0 +1,12 @@
+# flowpilot project settings. Every key is optional.
+# Environment variables (FLOWPILOT_*) override these values.
+workflows_dir: workflows
+database: .flowpilot/flowpilot.db
+host: 127.0.0.1
+port: 8080
+# Shell steps run arbitrary commands with the server's privileges. Off by default.
+allow_shell: false
+# Delete run history older than N days (0 = keep forever).
+history_days: 30
+# Python modules to import at startup (for custom @step plugins).
+plugins: []

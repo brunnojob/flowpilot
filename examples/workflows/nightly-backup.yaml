@@ -1,0 +1,39 @@
+# Archive a folder every night, keep the last 7 archives and send the archive
+# to Telegram (bots can upload files up to 50 MB).
+name: nightly-backup
+description: Back up a folder nightly as .tar.gz with 7-day retention, and ship it to Telegram.
+tags: [backup, telegram]
+trigger:
+  type: cron
+  cron: "30 3 * * *"
+  timezone: Asia/Tehran
+
+vars:
+  source: ./data
+  destination: ./backups
+
+steps:
+  - id: archive
+    type: archive
+    with:
+      source: "{{ vars.source }}"
+      destination: "{{ vars.destination }}"
+      prefix: data
+      format: tar.gz
+      keep: 7
+      exclude: ["*.tmp", "__pycache__", ".DS_Store"]
+
+  - id: upload
+    type: telegram
+    if: "{{ steps.archive.output.size < 45000000 }}"
+    with:
+      document: "{{ steps.archive.output.path }}"
+      caption: >-
+        🗄 Nightly backup <b>{{ steps.archive.output.name }}</b> ·
+        {{ steps.archive.output.files }} files · {{ (steps.archive.output.size / 1024) | round(1) }} KB
+
+on_failure:
+  - id: alert
+    type: telegram
+    with:
+      text: "❌ Nightly backup failed: {{ run.error | e }}"

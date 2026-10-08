@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>flowpilot</title>
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/static/app.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <a class="brand" href="#/">
+        <img src="/static/favicon.svg" alt="" width="30" height="30" />
+        <span>flowpilot</span>
+      </a>
+      <nav class="nav">
+        <a href="#/" data-route="overview"><span data-icon="grid"></span>Overview</a>
+        <a href="#/workflows" data-route="workflows"><span data-icon="layers"></span>Workflows</a>
+        <a href="#/runs" data-route="runs"><span data-icon="activity"></span>Runs</a>
+        <a href="#/steps" data-route="steps"><span data-icon="puzzle"></span>Step types</a>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="live" id="live"><span class="dot"></span><span id="live-text">Connecting…</span></div>
+        <a class="muted small" href="/api/docs" target="_blank" rel="noopener">REST API docs ↗</a>
+        <div class="muted small" id="version"></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="crumbs" id="crumbs"></div>
+          <h1 id="title">Overview</h1>
+        </div>
+        <div class="top-actions" id="top-actions"></div>
+      </header>
+      <section id="view" class="view" aria-live="polite"></section>
+    </main>
+  </div>
+
+  <div class="toasts" id="toasts"></div>
+
+  <dialog id="token-dialog" class="dialog">
+    <form method="dialog" id="token-form">
+      <h3>API token required</h3>
+      <p class="muted">This flowpilot server is protected. Enter the value of <code>FLOWPILOT_API_TOKEN</code>.</p>
+      <input id="token-input" type="password" autocomplete="current-password" placeholder="token" required />
+      <div class="dialog-actions"><button class="btn primary" value="ok">Unlock</button></div>
+    </form>
+  </dialog>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

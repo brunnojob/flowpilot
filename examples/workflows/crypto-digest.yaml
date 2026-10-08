@@ -1,0 +1,54 @@
+# Every morning at 09:00 Tehran time: crypto prices + USD exchange rates → Telegram.
+# Both APIs are free and need no key.
+name: crypto-digest
+description: Daily crypto and currency digest from public APIs, sent to Telegram at 09:00 Tehran time.
+tags: [finance, telegram]
+trigger:
+  type: cron
+  cron: "0 9 * * *"
+  timezone: Asia/Tehran
+
+vars:
+  coins: [bitcoin, ethereum, the-open-network, tether]
+  currencies: [EUR, GBP, AED, TRY, CNY]
+
+steps:
+  - id: crypto
+    type: http
+    timeout: 30
+    retry: { attempts: 3, delay: 5 }
+    with:
+      url: https://api.coingecko.com/api/v3/simple/price
+      params:
+        ids: "{{ vars.coins | join(',') }}"
+        vs_currencies: usd
+        include_24hr_change: "true"
+
+  - id: fx
+    type: http
+    timeout: 30
+    retry: { attempts: 3, delay: 5 }
+    with:
+      url: https://open.er-api.com/v6/latest/USD
+
+  - id: message
+    type: transform
+    with:
+      template: |
+        📊 <b>Daily digest</b> · {{ now('Asia/Tehran').strftime('%d %b %Y') }} · {{ now('Asia/Tehran') | jalali('%d %B %Y', true) }}
+
+        <b>Crypto (USD)</b>
+        {% for id in vars.coins %}
+        {% set c = steps.crypto.output.json[id] %}
+        {{ '🟢' if (c.usd_24h_change or 0) >= 0 else '🔴' }} {{ id }}: <code>${{ c.usd | number(2) }}</code> ({{ '%+.2f' | format(c.usd_24h_change or 0) }}%)
+        {% endfor %}
+
+        <b>1 USD equals</b>
+        {% for cur in vars.currencies %}
+        • <code>{{ steps.fx.output.json.rates[cur] | number(2) }}</code> {{ cur }}
+        {% endfor %}
+
+  - id: send
+    type: telegram
+    with:
+      text: "{{ steps.message.output }}"

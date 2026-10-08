@@ -1,0 +1,22 @@
+# Quick start:
+#   mkdir project && docker compose up -d
+#   open http://127.0.0.1:8080
+# Your workflows live in ./project/workflows (scaffolded on first start).
+services:
+  flowpilot:
+    build: .
+    image: flowpilot:local
+    container_name: flowpilot
+    restart: unless-stopped
+    ports:
+      # Bound to localhost by default. Put a reverse proxy (Caddy/nginx) in front
+      # and set FLOWPILOT_API_TOKEN before exposing it publicly.
+      - "127.0.0.1:8080:8080"
+    env_file:
+      - path: ./project/.env
+        required: false
+    environment:
+      TZ: ${TZ:-Asia/Tehran}
+      FLOWPILOT_API_TOKEN: ${FLOWPILOT_API_TOKEN:-}
+    volumes:
+      - ./project:/app

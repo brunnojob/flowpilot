@@ -1,0 +1,4 @@
+.env
+.flowpilot/
+backups/
+__pycache__/

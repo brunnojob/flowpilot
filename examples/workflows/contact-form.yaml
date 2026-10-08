@@ -1,0 +1,27 @@
+# Forward website contact-form submissions to Telegram.
+#   curl -X POST localhost:8080/hooks/contact \
+#     -H "X-Flowpilot-Secret: $CONTACT_WEBHOOK_SECRET" \
+#     -d name=Sara -d email=sara@example.com -d message="Hello!"
+name: contact-form
+description: Receive contact-form submissions via webhook and forward them to Telegram.
+tags: [webhook, telegram]
+trigger:
+  type: webhook
+  path: contact
+  methods: [POST]
+  secret: "{{ env.CONTACT_WEBHOOK_SECRET }}"
+
+steps:
+  - id: validate
+    type: condition
+    with:
+      check: "{{ trigger.body.message }}"
+      reason: empty message, nothing to forward
+
+  - id: notify
+    type: telegram
+    with:
+      text: |
+        📬 <b>New message</b> from {{ (trigger.body.name or 'anonymous') | e }} {{ (trigger.body.email or '') | e }}
+
+        {{ trigger.body.message | e }}
