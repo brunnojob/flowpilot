@@ -158,6 +158,7 @@ All in [`examples/workflows`](examples/workflows) — run `flowpilot -p examples
 | [`rss-to-telegram`](examples/workflows/rss-to-telegram.yaml) | feed | One channel post per new feed entry, cleaned by a custom plugin step |
 | [`nightly-backup`](examples/workflows/nightly-backup.yaml) | cron | `tar.gz` backup with 7-day retention, uploaded to Telegram, alert on failure |
 | [`contact-form`](examples/workflows/contact-form.yaml) | webhook + secret | Website contact form → Telegram |
+| [`discord-notification`](examples/workflows/discord-notification.yaml) | manual | Sends a message and embed through an incoming Discord webhook |
 | [`disk_space.py`](examples/workflows/disk_space.py) | cron | A workflow **written in Python** with its own custom step |
 
 ## 🏗 Architecture
@@ -244,6 +245,7 @@ A step's record is available to later steps as `steps.<id>.status`, `.output`, `
 | --- | --- |
 | `http` | `url*`, `method`, `headers`, `params`, `json`, `data`, `timeout`, `expect_status`, `fail_on_error` (default true), `follow_redirects`, `auth` → output `status`, `ok`, `json`, `text`, `headers`, `elapsed_ms` |
 | `telegram` | `text`, `chat_id`, `parse_mode` (`HTML`), `document`, `photo`, `caption`, `disable_preview`, `silent`, `thread_id`, `token`, `method` + `payload` (any Bot API call) |
+| `discord` | `content` (up to 2000 characters), `embeds` (up to 10 objects), `webhook_url` (defaults to `DISCORD_WEBHOOK_URL`), `username`, `avatar_url`, `allowed_mentions` (defaults to `{parse: []}`), `thread_id`, `timeout` → output `message_id`, `channel_id` |
 | `email` | `to*`, `subject*`, `body`, `html`, `sender`, `host`, `port`, `username`, `password`, `security` (`starttls`/`ssl`/`none`) — defaults from `SMTP_*` env vars |
 | `transform` | `value`, `template`, `data` + `jmespath`, `parse_json` |
 | `condition` | `check*`, `reason` — stops the run (successfully) when false |
@@ -256,6 +258,14 @@ A step's record is available to later steps as `steps.<id>.status`, `.output`, `
 | `sqlite` | `database*`, `query*`, `params`, `many`, `script` → `rows`, `rowcount`, `lastrowid` |
 | `state` | `set`, `merge` (deep), `delete` — persisted per workflow, readable as `state.<key>` |
 | `archive` | `source*`, `destination*`, `format` (`tar.gz`/`zip`), `prefix`, `exclude`, `keep` |
+
+The `discord` step requires `content` or `embeds`. Create an incoming webhook in
+your Discord channel's integrations settings and keep its URL in `.env` as
+`DISCORD_WEBHOOK_URL`. It sends with `wait=true` to confirm delivery. Network errors,
+HTTP 429 and 5xx responses can be retried with the step's `retry` setting; other HTTP
+errors fail immediately. Mentions are disabled by default; pass `allowed_mentions`
+to opt in. Use the [notification example](examples/workflows/discord-notification.yaml)
+to try it.
 
 ### Templates
 

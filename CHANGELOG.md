@@ -6,6 +6,11 @@ project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- `discord` step for webhook messages and embeds, with environment configuration,
+  delivery confirmation, retryable network/rate-limit errors and a notification example.
+
 ## [0.1.0] - 2026-10-08
 
 First public release.

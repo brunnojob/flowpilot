@@ -1,0 +1,18 @@
+# Set DISCORD_WEBHOOK_URL in examples/.env, then run:
+# flowpilot -p examples run discord-notification --payload '{"message":"Backup complete"}'
+name: discord-notification
+description: Send a manual notification to a Discord channel through a webhook.
+tags: [discord, notification]
+trigger: manual
+
+steps:
+  - id: notify
+    type: discord
+    retry: { attempts: 3, delay: 2, backoff: 2 }
+    with:
+      content: "{{ trigger.message or 'Hello from flowpilot!' }}"
+      username: flowpilot
+      embeds:
+        - title: Workflow notification
+          description: "Notification from run {{ run.id }}."
+          color: 5763719

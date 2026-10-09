@@ -3,6 +3,7 @@
 from flowpilot.steps import (  # noqa: F401
     archive,
     control,
+    discord,
     email,
     files,
     http,
