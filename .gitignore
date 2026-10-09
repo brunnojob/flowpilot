@@ -17,3 +17,9 @@ examples/backups/
 .DS_Store
 .idea/
 .vscode/
+
+build-native/
+
+runtime-regressions
+
+.netlify/

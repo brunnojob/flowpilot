@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import fnmatch
+import re
 import tarfile
 import zipfile
 from datetime import datetime
@@ -41,12 +42,16 @@ def archive(
     """
     if format not in {"tar.gz", "zip"}:
         raise StepConfigError("archive: format must be 'tar.gz' or 'zip'")
+    if keep is not None and (not isinstance(keep, int) or isinstance(keep, bool) or keep < 1):
+        raise StepConfigError("archive: keep must be a positive integer")
     src = ctx.resolve_path(source)
     if not src.exists():
         raise StepConfigError(f"archive: source {src} does not exist")
+    name = prefix or src.name or "backup"
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,63}", name):
+        raise StepConfigError("archive: invalid prefix")
     dest_dir = ctx.resolve_path(destination)
     dest_dir.mkdir(parents=True, exist_ok=True)
-    name = prefix or src.name or "backup"
     stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
     target = dest_dir / f"{name}-{stamp}.{format}"
     counter = 1

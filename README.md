@@ -22,7 +22,7 @@ and is configured with readable YAML (or Python).
 [Plugins](#-writing-plugins) ·
 [Deployment](#-deployment) ·
 [FAQ](#-faq) ·
-[فارسی](#-فارسی)
+[Persian](README.fa.md)
 
 <img src="docs/assets/screenshots/overview-dark.webp" alt="flowpilot dashboard — overview" width="100%" />
 
@@ -423,58 +423,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Contributions — especially new step ty
 
 <div dir="rtl">
 
-## 🇮🇷 فارسی
+## Translations
 
-**flowpilot** یک موتور اتوماسیون گردش‌کار سبک، خودمیزبان و کدمحور با پایتون است؛ چیزی شبیه یک n8n یا Zapier کوچک که روی یک VPS ارزان یا رزبری‌پای اجرا می‌شود و از همان ابتدا با **تلگرام** به‌عنوان پیام‌رسان اصلی طراحی شده است.
-
-### چرا flowpilot؟
-
-- **کدمحور:** هر گردش‌کار یک فایل YAML خوانا (یا پایتون) است که در گیت نگه‌داری و بازبینی می‌شود.
-- **سبک:** فقط یک پروسهٔ پایتون و SQLite؛ بدون نیاز به Redis، Postgres یا Node.
-- **تلگرام داخلی:** ارسال پیام، فایل و عکس، تقسیم خودکار پیام‌های طولانی، فراخوانی هر متد Bot API و امکان استفاده از سرور Bot API شخصی یا پراکسی (`TELEGRAM_API_BASE` و `HTTPS_PROXY`) وقتی دسترسی مستقیم به تلگرام ممکن نیست.
-- **تقویم جلالی:** فیلتر `jalali` تاریخ شمسی را در پیام‌ها نمایش می‌دهد؛ مثلاً `{{ now('Asia/Tehran') | jalali('%d %B %Y') }}` و `fa_digits` برای ارقام فارسی.
-- **امکانات کامل:** زمان‌بندی cron با منطقهٔ زمانی تهران، وب‌هوک، پایش فایل، خوراک RSS، درخواست HTTP، شرط و انشعاب، تلاش مجدد با backoff، timeout، حالت ماندگار، پشتیبان‌گیری و ارسال ایمیل.
-- **داشبورد زیبا:** نمایش زندهٔ لاگ اجرا، تاریخچه، اجرای دستی و فعال/غیرفعال‌سازی با تم روشن و تیره.
-- **قابل توسعه:** با دکوریتور `@step` یک تابع پایتون را به یک گام جدید تبدیل کنید.
-
-### شروع سریع
-
-<div dir="ltr">
-
-```bash
-pipx install "git+https://github.com/mrzroot/flowpilot.git"
-flowpilot init my-automations && cd my-automations
-flowpilot run hello
-flowpilot serve   # http://127.0.0.1:8080
-```
-
-</div>
-
-توکن ربات را از [@BotFather](https://t.me/BotFather) بگیرید و در فایل `.env` قرار دهید (`TELEGRAM_BOT_TOKEN` و `TELEGRAM_CHAT_ID`). نمونه‌های آماده در پوشهٔ `examples` شامل این موارد هستند: اطلاع‌رسانی نسخه‌های جدید گیت‌هاب، پایش در دسترس بودن وب‌سایت، گزارش روزانهٔ قیمت رمزارز و نرخ ارز (ساعت ۹ صبح به وقت تهران)، انتشار خودکار RSS در کانال تلگرام، پشتیبان‌گیری شبانه و فرم تماس وب‌سایت.
-
-### نمونهٔ ساده
-
-<div dir="ltr">
-
-```yaml
-name: good-morning
-trigger: { type: cron, cron: "0 8 * * *", timezone: Asia/Tehran }
-steps:
-  - id: send
-    type: telegram
-    with:
-      text: "☀️ صبح بخیر! امروز {{ now('Asia/Tehran') | jalali('%A %d %B %Y') | fa_digits }}"
-```
-
-</div>
-
-### امنیت
-
-داشبورد و API به‌صورت پیش‌فرض فقط روی `127.0.0.1` در دسترس هستند. اگر سرور را روی شبکه باز می‌کنید حتماً `FLOWPILOT_API_TOKEN` را تنظیم کنید، برای وب‌هوک‌ها `secret` بگذارید و گام `shell` را فقط در صورت نیاز فعال کنید. جزئیات بیشتر در [SECURITY.md](SECURITY.md).
-
-مشارکت، گزارش باگ و پیشنهاد گام‌های جدید با کمال میل پذیرفته می‌شود.
-
-</div>
+[Persian documentation](README.fa.md)
 
 ---
 
@@ -483,3 +434,11 @@ steps:
 MIT © 2026 <a href="https://github.com/mrzroot">Mohammadreza Zare</a> · Built in Mashhad 🇮🇷
 
 </div>
+
+## Implementation update
+
+Archive prefixes are bounded filename components. Retention must be a positive integer and is validated before any destination is created. This prevents path traversal and malformed retention settings from creating partial backups. Upstream attribution and license remain intact.
+
+Credits for this fork's updates: [brunnodev.store](https://brunnodev.store). Original authors retain their respective attribution.
+
+Contribution trailer: `Co-authored-by: nyctophile <33561761+ineedfoundmyway@users.noreply.github.com>`.
