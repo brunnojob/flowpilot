@@ -13,6 +13,7 @@ and is configured with readable YAML (or Python).
 [![Release](https://img.shields.io/github/v/release/mrzroot/flowpilot?sort=semver)](https://github.com/mrzroot/flowpilot/releases)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-3776AB?logo=python&logoColor=white)](https://github.com/mrzroot/flowpilot/blob/main/pyproject.toml)
 [![License: MIT](https://img.shields.io/github/license/mrzroot/flowpilot)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/mrzroot/flowpilot?style=flat&logo=github)](https://github.com/mrzroot/flowpilot/stargazers)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
 [Website](https://mrzroot.github.io/flowpilot/) ·
@@ -26,6 +27,14 @@ and is configured with readable YAML (or Python).
 <img src="docs/assets/screenshots/overview-dark.webp" alt="flowpilot dashboard — overview" width="100%" />
 
 </div>
+
+### ⚡ Quickstart
+
+```bash
+pipx install "git+https://github.com/mrzroot/flowpilot.git"
+flowpilot init my-automations && cd my-automations
+flowpilot run hello      # then: flowpilot serve → dashboard on http://127.0.0.1:8080
+```
 
 ---
 
