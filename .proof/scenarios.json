@@ -1,0 +1,47 @@
+{
+  "repository": "brunnojob/flowpilot",
+  "inputs": [
+    ".proof/scenarios.json"
+  ],
+  "cases": [
+    {
+      "name": "pip install -e \".[dev]\"",
+      "argv": [
+        "bash",
+        "-e",
+        "-o",
+        "pipefail",
+        "-c",
+        "pip install -e \".[dev]\""
+      ],
+      "timeout": 900,
+      "display": false
+    },
+    {
+      "name": "pytest --cov=flowpilot --cov-report=term-missing --cov-report=xml",
+      "argv": [
+        "bash",
+        "-e",
+        "-o",
+        "pipefail",
+        "-c",
+        "pytest --cov=flowpilot --cov-report=term-missing --cov-report=xml"
+      ],
+      "timeout": 900,
+      "display": true
+    },
+    {
+      "name": "flowpilot -p examples validate",
+      "argv": [
+        "bash",
+        "-e",
+        "-o",
+        "pipefail",
+        "-c",
+        "flowpilot -p examples validate"
+      ],
+      "timeout": 900,
+      "display": true
+    }
+  ]
+}
