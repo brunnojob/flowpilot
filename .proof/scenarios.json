@@ -1,7 +1,8 @@
 {
   "repository": "brunnojob/flowpilot",
   "inputs": [
-    ".proof/scenarios.json"
+    ".proof/scenarios.json",
+    ".proof/demo.py"
   ],
   "cases": [
     {
@@ -42,6 +43,15 @@
       ],
       "timeout": 900,
       "display": true
+    },
+    {
+      "name": "Execute a persisted workflow twice through the real CLI",
+      "argv": [
+        "python",
+        ".proof/demo.py"
+      ],
+      "contains": [],
+      "timeout": 120
     }
   ]
 }

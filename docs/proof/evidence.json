@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "repository": "brunnojob/flowpilot",
+  "source_commit": "b87932565503fa49d67358dfff4a76057b23ca7b",
+  "generated_at": "2026-10-10T02:35:30.863862+00:00",
+  "run_url": "https://github.com/brunnojob/flowpilot/actions/runs/38017516809",
+  "inputs_sha256": {
+    ".proof/scenarios.json": "14e46fe7d4e746af0954ed8cb7f6f988d3f1272e7f16064402c6a3b1a1150550"
+  },
+  "cases": [
+    {
+      "display": false,
+      "name": "pip install -e \".[dev]\"",
+      "argv": [
+        "bash",
+        "-e",
+        "-o",
+        "pipefail",
+        "-c",
+        "pip install -e \".[dev]\""
+      ],
+      "exit": 0,
+      "expected_exit": 0,
+      "passed": true,
+      "seconds": 13.079,
+      "output": "Obtaining file:///home/runner/work/flowpilot/flowpilot\n  Installing build dependencies: started\n  Installing build dependencies: finished with status 'done'\n  Checking if build backend supports build_editable: started\n  Checking if build backend supports build_editable: finished with status 'done'\n  Getting requirements to build editable: started\n  Getting requirements to build editable: finished with status 'done'\n  Installing backend dependencies: started\n  Installing backend dependencies: finished with status 'done'\n  Preparing editable metadata (pyproject.toml): started\n  Preparing editable metadata (pyproject.toml): finished with status 'done'\nCollecting click>=8.1 (from flowpilot==0.1.0)\n  Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)\nCollecting croniter>=2.0 (from flowpilot==0.1.0)\n  Downloading croniter-6.2.4-py3-none-any.whl.metadata (23 kB)\nCollecting fastapi>=0.110 (from flowpilot==0.1.0)\n  Downloading fastapi-0.143.0-py3-none-any.whl.metadata (26 kB)\nCollecting feedparser>=6.0.14 (from flowpilot==0.1.0)\n  Downloading feedparser-6.0.14-py3-none-any.whl.metadata (2.7 kB)\nCollecting httpx>=0.26 (from flowpilot==0.1.0)\n  Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)\nCollecting jinja2>=3.1.3 (from flowpilot==0.1.0)\n  Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)\nCollecting jmespath>=1.0 (from flowpilot==0.1.0)\n  Downloading jmespath-1.1.0-py3-none-any.whl.metadata (7.6 kB)\nCollecting pydantic>=2.5 (from flowpilot==0.1.0)\n  Downloading pydantic-2.14.0-py3-none-any.whl.metadata (131 kB)\nCollecting python-dotenv>=1.0 (from flowpilot==0.1.0)\n  Downloading python_dotenv-1.2.4-py3-none-any.whl.metadata (29 kB)\nCollecting python-multipart>=0.0.9 (from flowpilot==0.1.0)\n  Downloading python_multipart-0.0.32-py3-none-any.whl.metadata (2.1 kB)\nCollecting pyyaml>=6.0.3 (from flowpilot==0.1.0)\n  Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)\nCollecting uvicorn>=0.27 (from flowpilot==0.1.0)\n  Downloading uvicorn-0.54.0-py3-none-any.whl.metadata (6.6 kB)\nCollecting mypy>=1.8 (from flowpilot==0.1.0)\n  Downloading mypy-2.4.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)\nCollecting pytest-asyncio>=1.4.0 (from flowpilot==0.1.0)\n  Downloading pytest_asyncio-1.4.0-py3-none-any.whl.metadata (4.1 kB)\nCollecting pytest-cov>=7.1.0 (from flowpilot==0.1.0)\n  Downloading pytest_cov-7.1.0-py3-none-any.whl.metadata (32 kB)\nCollecting pytest>=8.0 (from flowpilot==0.1.0)\n  Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)\nCollecting respx>=0.23.1 (from flowpilot==0.1.0)\n  Downloading respx-0.23.1-py2.py3-none-any.whl.metadata (4.3 kB)\nCollecting ruff>=0.6 (from flowpilot==0.1.0)\n  Downloading ruff-0.17.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (20 kB)\nCollecting types-croniter (from flowpilot==0.1.0)\n  Downloading types_croniter-6.2.4.20261006-py3-none-any.whl.metadata (1.8 kB)\nCollecting types-jmespath (from flowpilot==0.1.0)\n  Downloading types_jmespath-1.1.0.20260724-py3-none-any.whl.metadata (1.7 kB)\nCollecting types-pyyaml (from flowpilot==0.1.0)\n  Downloading types_pyyaml-6.0.12.20260906-py3-none-any.whl.metadata (1.8 kB)\nCollecting python-dateutil (from croniter>=2.0->flowpilot==0.1.0)\n  Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)\nCollecting starlette>=0.46.0 (from fastapi>=0.110->flowpilot==0.1.0)\n  Downloading star\nFull transcript in the execution-proof artifact.",
+      "output_sha256": "81f3cb66ff3df11aa251789d6274e2dc362aefc1f830715e9e3d86faf6daf6a5",
+      "output_truncated": true
+    },
+    {
+      "display": true,
+      "name": "pytest --cov=flowpilot --cov-report=term-missing --cov-report=xml",
+      "argv": [
+        "bash",
+        "-e",
+        "-o",
+        "pipefail",
+        "-c",
+        "pytest --cov=flowpilot --cov-report=term-missing --cov-report=xml"
+      ],
+      "exit": 0,
+      "expected_exit": 0,
+      "passed": true,
+      "seconds": 18.896,
+      "output": "============================= test session starts ==============================\nplatform linux -- Python 3.12.15, pytest-9.1.1, pluggy-1.6.0\nrootdir: /home/runner/work/flowpilot/flowpilot\nconfigfile: pyproject.toml\ntestpaths: tests\nplugins: asyncio-1.4.0, respx-0.23.1, cov-7.1.0, anyio-4.15.1\nasyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollected 151 items\n\ntests/test_api.py .............                                          [  8%]\ntests/test_archive_validation.py .                                       [  9%]\ntests/test_cli.py ........                                               [ 14%]\ntests/test_engine.py ...........................                         [ 32%]\ntests/test_jalali.py .......                                             [ 37%]\ntests/test_loader_config_store.py ...............                        [ 47%]\ntests/test_models.py ................                                    [ 57%]\ntests/test_registry.py ........                                          [ 62%]\ntests/test_steps_http.py ........                                        [ 68%]\ntests/test_steps_misc.py .................                               [ 79%]\ntests/test_steps_telegram.py ..........                                  [ 86%]\ntests/test_templating.py ...........                                     [ 93%]\ntests/test_triggers.py ..........                                        [100%]\n\n================================ tests coverage ================================\n_______________ coverage: platform linux, python 3.12.15-final-0 _______________\n\nName                                  Stmts   Miss Branch BrPart  Cover   Missing\n---------------------------------------------------------------------------------\nsrc/flowpilot/__main__.py                 1      1      0      0     0%   3\nsrc/flowpilot/cli.py                    219      6     64      5    96%   34, 149-150, 224->228, 269, 288, 308\nsrc/flowpilot/context.py                 82      1      4      0    99%   75\nsrc/flowpilot/engine.py                 268      4     62      2    98%   115, 253-255, 437->484\nsrc/flowpilot/events.py                  36      0      6      1    98%   38->40\nsrc/flowpilot/logs.py                    31      1      8      1    95%   27\nsrc/flowpilot/models.py                 178      3     42      2    98%   53, 97, 198\nsrc/flowpilot/registry.py               142      9     46      6    90%   94, 98, 102, 114-118, 212->214, 234\nsrc/flowpilot/server/app.py             269     23     70      6    89%   58, 60, 73->75, 130-131, 207->212, 210-211, 289->292, 295-307, 314, 339-341\nsrc/flowpilot/steps/control.py           40      2     10      0    96%   36-37\nsrc/flowpilot/steps/email.py             46      0     14      1    98%   68->70\nsrc/flowpilot/steps/files.py             33      0     14      1    98%   31->33\nsrc/flowpilot/steps/python.py            43      1     16      1    97%   59\nsrc/flowpilot/steps/shell.py             45      4      8      0    92%   80-83\nsrc/flowpilot/steps/state.py             24      0     12      1    97%   38->40\nsrc/flowpilot/steps/telegram.py          94      2     36      2    97%   40-41, 48->50\nsrc/flowpilot/store.py                  156      3     26      0    98%   120-122\nsrc/flowpilot/templating.py             102      2     32      3    96%   66->68, 70, 85\nsrc/flowpilot/triggers/feed.py           55      4      4      0    93%   84-87\nsrc/flowpilo\nFull transcript in the execution-proof artifact.",
+      "output_sha256": "7a1ab762adec2fdc527ff362e2fddfa513fcb6f60c4b82aa8b2143ebd248680a",
+      "output_truncated": true
+    },
+    {
+      "display": true,
+      "name": "flowpilot -p examples validate",
+      "argv": [
+        "bash",
+        "-e",
+        "-o",
+        "pipefail",
+        "-c",
+        "flowpilot -p examples validate"
+      ],
+      "exit": 0,
+      "expected_exit": 0,
+      "passed": true,
+      "seconds": 0.301,
+      "output": "✓ disk-space-alert  (2 steps, cron)\n✓ contact-form  (2 steps, webhook)\n✓ crypto-digest  (4 steps, cron)\n✓ github-release-watcher  (3 steps, cron)\n✓ nightly-backup  (2 steps, cron)\n✓ rss-to-telegram  (2 steps, feed)\n✓ uptime-monitor  (3 steps, interval)\n\nall 7 workflow(s) valid\n",
+      "output_sha256": "9831ad5137bafd9f763fad14c409789ef569f37f73ec378bc2003d0f568c6e6d"
+    }
+  ],
+  "passed": true
+}

@@ -1,0 +1,119 @@
+$ bash -e -o pipefail -c pip install -e ".[dev]"
+Obtaining file:///home/runner/work/flowpilot/flowpilot
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Installing backend dependencies: started
+  Installing backend dependencies: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Collecting click>=8.1 (from flowpilot==0.1.0)
+  Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+Collecting croniter>=2.0 (from flowpilot==0.1.0)
+  Downloading croniter-6.2.4-py3-none-any.whl.metadata (23 kB)
+Collecting fastapi>=0.110 (from flowpilot==0.1.0)
+  Downloading fastapi-0.143.0-py3-none-any.whl.metadata (26 kB)
+Collecting feedparser>=6.0.14 (from flowpilot==0.1.0)
+  Downloading feedparser-6.0.14-py3-none-any.whl.metadata (2.7 kB)
+Collecting httpx>=0.26 (from flowpilot==0.1.0)
+  Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+Collecting jinja2>=3.1.3 (from flowpilot==0.1.0)
+  Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+Collecting jmespath>=1.0 (from flowpilot==0.1.0)
+  Downloading jmespath-1.1.0-py3-none-any.whl.metadata (7.6 kB)
+Collecting pydantic>=2.5 (from flowpilot==0.1.0)
+  Downloading pydantic-2.14.0-py3-none-any.whl.metadata (131 kB)
+Collecting python-dotenv>=1.0 (from flowpilot==0.1.0)
+  Downloading python_dotenv-1.2.4-py3-none-any.whl.metadata (29 kB)
+Collecting python-multipart>=0.0.9 (from flowpilot==0.1.0)
+  Downloading python_multipart-0.0.32-py3-none-any.whl.metadata (2.1 kB)
+Collecting pyyaml>=6.0.3 (from flowpilot==0.1.0)
+  Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+Collecting uvicorn>=0.27 (from flowpilot==0.1.0)
+  Downloading uvicorn-0.54.0-py3-none-any.whl.metadata (6.6 kB)
+Collecting mypy>=1.8 (from flowpilot==0.1.0)
+  Downloading mypy-2.4.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+Collecting pytest-asyncio>=1.4.0 (from flowpilot==0.1.0)
+  Downloading pytest_asyncio-1.4.0-py3-none-any.whl.metadata (4.1 kB)
+Collecting pytest-cov>=7.1.0 (from flowpilot==0.1.0)
+  Downloading pytest_cov-7.1.0-py3-none-any.whl.metadata (32 kB)
+Collecting pytest>=8.0 (from flowpilot==0.1.0)
+  Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+Collecting respx>=0.23.1 (from flowpilot==0.1.0)
+  Downloading respx-0.23.1-py2.py3-none-any.whl.metadata (4.3 kB)
+Collecting ruff>=0.6 (from flowpilot==0.1.0)
+  Downloading ruff-0.17.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (20 kB)
+Collecting types-croniter (from flowpilot==0.1.0)
+  Downloading types_croniter-6.2.4.20261006-py3-none-any.whl.metadata (1.8 kB)
+Collecting types-jmespath (from flowpilot==0.1.0)
+  Downloading types_jmespath-1.1.0.20260724-py3-none-any.whl.metadata (1.7 kB)
+Collecting types-pyyaml (from flowpilot==0.1.0)
+  Downloading types_pyyaml-6.0.12.20260906-py3-none-any.whl.metadata (1.8 kB)
+Collecting python-dateutil (from croniter>=2.0->flowpilot==0.1.0)
+  Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+Collecting starlette>=0.46.0 (from fastapi>=0.110->flowpilot==0.1.0)
+  Downloading star
+Full transcript in the execution-proof artifact.
+$ bash -e -o pipefail -c pytest --cov=flowpilot --cov-report=term-missing --cov-report=xml
+============================= test session starts ==============================
+platform linux -- Python 3.12.15, pytest-9.1.1, pluggy-1.6.0
+rootdir: /home/runner/work/flowpilot/flowpilot
+configfile: pyproject.toml
+testpaths: tests
+plugins: asyncio-1.4.0, respx-0.23.1, cov-7.1.0, anyio-4.15.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 151 items
+
+tests/test_api.py .............                                          [  8%]
+tests/test_archive_validation.py .                                       [  9%]
+tests/test_cli.py ........                                               [ 14%]
+tests/test_engine.py ...........................                         [ 32%]
+tests/test_jalali.py .......                                             [ 37%]
+tests/test_loader_config_store.py ...............                        [ 47%]
+tests/test_models.py ................                                    [ 57%]
+tests/test_registry.py ........                                          [ 62%]
+tests/test_steps_http.py ........                                        [ 68%]
+tests/test_steps_misc.py .................                               [ 79%]
+tests/test_steps_telegram.py ..........                                  [ 86%]
+tests/test_templating.py ...........                                     [ 93%]
+tests/test_triggers.py ..........                                        [100%]
+
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.15-final-0 _______________
+
+Name                                  Stmts   Miss Branch BrPart  Cover   Missing
+---------------------------------------------------------------------------------
+src/flowpilot/__main__.py                 1      1      0      0     0%   3
+src/flowpilot/cli.py                    219      6     64      5    96%   34, 149-150, 224->228, 269, 288, 308
+src/flowpilot/context.py                 82      1      4      0    99%   75
+src/flowpilot/engine.py                 268      4     62      2    98%   115, 253-255, 437->484
+src/flowpilot/events.py                  36      0      6      1    98%   38->40
+src/flowpilot/logs.py                    31      1      8      1    95%   27
+src/flowpilot/models.py                 178      3     42      2    98%   53, 97, 198
+src/flowpilot/registry.py               142      9     46      6    90%   94, 98, 102, 114-118, 212->214, 234
+src/flowpilot/server/app.py             269     23     70      6    89%   58, 60, 73->75, 130-131, 207->212, 210-211, 289->292, 295-307, 314, 339-341
+src/flowpilot/steps/control.py           40      2     10      0    96%   36-37
+src/flowpilot/steps/email.py             46      0     14      1    98%   68->70
+src/flowpilot/steps/files.py             33      0     14      1    98%   31->33
+src/flowpilot/steps/python.py            43      1     16      1    97%   59
+src/flowpilot/steps/shell.py             45      4      8      0    92%   80-83
+src/flowpilot/steps/state.py             24      0     12      1    97%   38->40
+src/flowpilot/steps/telegram.py          94      2     36      2    97%   40-41, 48->50
+src/flowpilot/store.py                  156      3     26      0    98%   120-122
+src/flowpilot/templating.py             102      2     32      3    96%   66->68, 70, 85
+src/flowpilot/triggers/feed.py           55      4      4      0    93%   84-87
+src/flowpilo
+Full transcript in the execution-proof artifact.
+$ bash -e -o pipefail -c flowpilot -p examples validate
+✓ disk-space-alert  (2 steps, cron)
+✓ contact-form  (2 steps, webhook)
+✓ crypto-digest  (4 steps, cron)
+✓ github-release-watcher  (3 steps, cron)
+✓ nightly-backup  (2 steps, cron)
+✓ rss-to-telegram  (2 steps, feed)
+✓ uptime-monitor  (3 steps, interval)
+
+all 7 workflow(s) valid
