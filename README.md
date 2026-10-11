@@ -4,6 +4,8 @@
 
 # flowpilot
 
+[View execution evidence](https://brunnojob.github.io/devstart-lab/proofs/flowpilot/)
+
 **A lightweight, self-hosted, code-first workflow automation engine — with first-class Telegram support.**
 
 Think of a tiny n8n/Zapier that lives in a Git repo, runs on a $5 VPS or a Raspberry Pi,
