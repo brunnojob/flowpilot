@@ -2,8 +2,10 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8" />
+<script>/*mrz-theme*/(function(){var d=document.documentElement,m='system';try{m=localStorage.getItem('mrz-theme')||'system'}catch(e){}var q=window.matchMedia?matchMedia('(prefers-color-scheme: dark)'):null;var t=m==='light'||m==='dark'?m:(q&&q.matches?'dark':'light');d.setAttribute('data-theme',t);d.style.colorScheme=t})()</script>
+<meta name="theme-color" content="#f7f5ef">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="light dark" />
+  <meta name="color-scheme" content="light dark">
   <title>flowpilot — self-hosted workflow automation with first-class Telegram support</title>
   <meta name="description" content="A lightweight, self-hosted, code-first workflow automation engine in Python. YAML workflows, cron, webhooks, RSS, retries, a live dashboard and first-class Telegram support. Runs on a $5 VPS or a Raspberry Pi." />
   <meta property="og:title" content="flowpilot — automations as code" />
@@ -128,6 +130,30 @@
     @media (max-width: 600px) { .grid, .ex { grid-template-columns: 1fr; } header.hero { padding-top: 56px; } }
     @media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
   </style>
+<style id="mrz-theme-css">
+/* mrz theme toggle */
+.mrz-tt{all:unset;box-sizing:border-box;cursor:pointer;display:inline-grid;place-items:center;flex:none;width:34px;height:34px;border-radius:999px;color:inherit;border:1.5px solid currentColor;transition:transform .2s,background-color .2s}
+.mrz-tt:hover{transform:rotate(-12deg)}.mrz-tt:focus-visible{outline:2px solid #1fb5ad;outline-offset:3px}
+.mrz-tt svg{width:17px;height:17px;display:block}
+html[data-theme=dark] .mrz-tt .i-moon,html:not([data-theme=dark]) .mrz-tt .i-sun{display:none}
+/* flowpilot · explicit light/dark (toggle + system) on the turquoise + gold palette */
+html[data-theme=light]{--bg:#f7f5ef;--bg2:#fffdf8;--card:#fffdf8;--line:rgba(11,18,48,.1);--text:#0b1230;--text2:#3a4363;--muted:#5b6383;--accent:#0a7671;--accent2:#8a5c0c;
+--grad:linear-gradient(135deg,#0a7671 0%,#0e8c86 45%,#8a5c0c 100%);--code-bg:#fffdf8;--code-text:#0b1230;
+--shadow:0 30px 80px -34px rgba(11,18,48,.3);--glow:radial-gradient(800px 400px at 70% 0%,rgba(31,181,173,.16),transparent 60%),radial-gradient(700px 400px at 0% 30%,rgba(232,176,75,.14),transparent 60%);
+--on-grad:#fff;--k:#7a3fd0;--s:#8a5c0c;--c:#5b6383;--t:#0a7671;--n:#b23a0c;color-scheme:light}
+html[data-theme=dark]{--bg:#070b1a;--bg2:#0b1124;--card:#0e1428;--line:rgba(170,190,255,.1);--text:#eceff7;--text2:#a9b1cc;--muted:#8a93b3;--accent:#3fd0c9;--accent2:#e8b04b;
+--grad:linear-gradient(135deg,#3fd0c9 0%,#6adcd6 45%,#e8b04b 100%);--code-bg:#060a17;--code-text:#dfe5f3;
+--shadow:0 40px 100px -30px rgba(0,0,0,.85);--glow:radial-gradient(800px 400px at 70% 0%,rgba(63,208,201,.16),transparent 60%),radial-gradient(700px 400px at 0% 30%,rgba(232,176,75,.1),transparent 60%);
+--on-grad:#04201f;--k:#c3a6ff;--s:#f0be5e;--c:#8a94b6;--t:#3fd0c9;--n:#ff9f80;color-scheme:dark}
+html[data-theme] .btn.primary,html[data-theme] .steps li::before{color:var(--on-grad)}
+html[data-theme] .btn.primary{box-shadow:0 14px 30px -14px rgba(31,181,173,.7)}
+html[data-theme] .logo img{box-shadow:0 8px 20px -8px rgba(31,181,173,.6)}
+html[data-theme] .install,html[data-theme] pre.code{border:1px solid var(--line)}
+html[data-theme] .install .p,html[data-theme] .t{color:var(--t)}
+html[data-theme] .k{color:var(--k)}html[data-theme] .s{color:var(--s)}html[data-theme] .c{color:var(--c)}html[data-theme] .n{color:var(--n)}
+html[data-theme] .copy{border-color:var(--line);background:color-mix(in srgb,var(--text) 6%,transparent);color:var(--text2)}
+html[data-theme] .copy:hover{background:color-mix(in srgb,var(--text) 12%,transparent)}
+</style>
 </head>
 <body>
   <nav>
@@ -139,7 +165,7 @@
         <a href="#examples" data-i18n="nav.examples">Examples</a>
         <a href="#start" data-i18n="nav.start">Get started</a>
       </div>
-      <button class="btn sm" id="lang" type="button" aria-label="Switch language">فارسی</button>
+      <button type="button" class="mrz-tt" data-theme-toggle aria-label="Switch to dark mode" title="Switch to dark mode"><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></g></svg><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg></button><button class="btn sm" id="lang" type="button" aria-label="Switch language">فارسی</button>
       <a class="btn sm" href="https://github.com/mrzroot/flowpilot">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.9 1.3 1.9 1.3 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5Z"/></svg>
         GitHub
@@ -351,5 +377,16 @@ mkdir project <span class="k">&amp;&amp;</span> docker compose up -d</pre></div>
       }));
     })();
   </script>
+<script>/*mrz-theme-toggle*/(function(){var d=document.documentElement,q=window.matchMedia?matchMedia('(prefers-color-scheme: dark)'):null;
+function fa(){return d.getAttribute('data-lang')==='fa'||d.lang==='fa'}
+function sync(){var t=d.getAttribute('data-theme')==='dark'?'dark':'light',f=fa();
+document.querySelectorAll('[data-theme-toggle]').forEach(function(x){var l=t==='dark'?(f?'\u062a\u063a\u06cc\u06cc\u0631 \u0628\u0647 \u062d\u0627\u0644\u062a \u0631\u0648\u0634\u0646':'Switch to light mode'):(f?'\u062a\u063a\u06cc\u06cc\u0631 \u0628\u0647 \u062d\u0627\u0644\u062a \u062a\u06cc\u0631\u0647':'Switch to dark mode');x.setAttribute('aria-label',l);x.title=l;x.setAttribute('aria-pressed',t==='dark'?'true':'false')});
+document.querySelectorAll('picture source[media*="prefers-color-scheme"]').forEach(function(s){if(!s.getAttribute('data-mq'))s.setAttribute('data-mq',s.media);var wd=/dark/.test(s.getAttribute('data-mq'));s.media=(wd===(t==='dark'))?'all':'not all'});
+var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',t==='dark'?'#070b1a':'#f7f5ef')}
+function set(t,save){d.setAttribute('data-theme',t);d.style.colorScheme=t;if(save){try{localStorage.setItem('mrz-theme',t)}catch(e){}}try{document.dispatchEvent(new CustomEvent('mrz-theme',{detail:t}))}catch(e){}}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-theme-toggle]');if(!b)return;set(d.getAttribute('data-theme')==='dark'?'light':'dark',true)});
+if(q&&q.addEventListener)q.addEventListener('change',function(){var m;try{m=localStorage.getItem('mrz-theme')}catch(e){}if(m!=='light'&&m!=='dark')set(q.matches?'dark':'light',false)});
+window.addEventListener('storage',function(e){if(e.key==='mrz-theme'){var m=e.newValue;set(m==='light'||m==='dark'?m:(q&&q.matches?'dark':'light'),false)}});
+if(window.MutationObserver)new MutationObserver(sync).observe(d,{attributes:true,attributeFilter:['data-lang','lang','data-theme']});sync()})()</script>
 </body>
 </html>
