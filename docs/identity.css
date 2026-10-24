@@ -25,3 +25,7 @@ h1 .grad{background-size:220% 100%;animation:flowg 8s linear infinite alternate}
 h2::before{content:'';display:block;width:56px;height:10px;margin:0 auto 14px;background:radial-gradient(circle at 5px 5px,var(--accent) 4px,transparent 5px) 0 0/28px 10px repeat-x}
 .shot{box-shadow:0 0 0 1px var(--line),0 40px 90px -30px var(--accent)!important}
 @media(prefers-reduced-motion:reduce){h1 .grad,.btn.primary::after,.chip::before{animation:none}}
+
+/* a11y: AA contrast for small text in light theme */
+html[data-theme=light] .ex .tag{color:#9a5908}
+@media(max-width:480px){nav>.wrap{gap:8px!important}nav .btn.sm{padding-inline:10px;font-size:13px}nav .logo{font-size:15px;gap:6px}}
