@@ -154,7 +154,7 @@ html[data-theme] .k{color:var(--k)}html[data-theme] .s{color:var(--s)}html[data-
 html[data-theme] .copy{border-color:var(--line);background:color-mix(in srgb,var(--text) 6%,transparent);color:var(--text2)}
 html[data-theme] .copy:hover{background:color-mix(in srgb,var(--text) 12%,transparent)}
 </style>
-</head>
+<link rel="preload" href="fonts/sora-400.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="fonts/sora-700.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="identity.css"></head>
 <body>
   <nav>
     <div class="wrap">
@@ -388,5 +388,5 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 if(q&&q.addEventListener)q.addEventListener('change',function(){var m;try{m=localStorage.getItem('mrz-theme')}catch(e){}if(m!=='light'&&m!=='dark')set(q.matches?'dark':'light',false)});
 window.addEventListener('storage',function(e){if(e.key==='mrz-theme'){var m=e.newValue;set(m==='light'||m==='dark'?m:(q&&q.matches?'dark':'light'),false)}});
 if(window.MutationObserver)new MutationObserver(sync).observe(d,{attributes:true,attributeFilter:['data-lang','lang','data-theme']});sync()})()</script>
-</body>
+<script src="fx.js" defer></script></body>
 </html>

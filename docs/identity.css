@@ -1,0 +1,27 @@
+/* flowpilot identity: "graph". Lavender paper / ink-night with periwinkle + amber pulses. Sora. Draggable node graph with data pulses. */
+@font-face{font-family:'Sora';src:url(fonts/sora-400.woff2) format('woff2');font-weight:300 500;font-display:swap}
+@font-face{font-family:'Sora';src:url(fonts/sora-700.woff2) format('woff2');font-weight:600 800;font-display:swap}
+html[data-theme=light]:root{--bg:#efeaff;--bg2:#f8f5ff;--card:#fdfbff;--line:rgba(60,40,140,.14);--text:#16123a;--text2:#40386f;--muted:#6a6396;--accent:#4f3df0;--accent2:#e8860c;--grad:linear-gradient(120deg,#4f3df0 0%,#8a5cf6 50%,#e8860c 100%);--on-grad:#fff;--glow:radial-gradient(800px 420px at 80% 0,rgba(79,61,240,.16),transparent 60%),radial-gradient(600px 400px at 0 40%,rgba(232,134,12,.12),transparent 60%);--t:#4f3df0}
+html[data-theme=dark]:root{--bg:#090a14;--bg2:#0d0e1b;--card:#12142a;--line:rgba(140,150,255,.14);--text:#eceeff;--text2:#aab0dc;--muted:#7d84b3;--accent:#8c97ff;--accent2:#ffa23d;--grad:linear-gradient(120deg,#8c97ff 0%,#c0a0ff 50%,#ffa23d 100%);--on-grad:#0a0b1f;--glow:radial-gradient(800px 420px at 80% 0,rgba(110,120,255,.22),transparent 60%),radial-gradient(600px 400px at 0 40%,rgba(255,162,61,.1),transparent 60%);--t:#8c97ff}
+body,h1,h2,h3,.btn,.pill,.logo{font-family:Sora,Vazirmatn,system-ui,sans-serif}
+html[lang=fa] body,html[lang=fa] h1,html[lang=fa] h2,html[lang=fa] h3,html[lang=fa] .btn{font-family:Vazirmatn,Sora,sans-serif}
+h1{letter-spacing:-.04em!important;font-weight:800}
+h1 .grad{background-size:220% 100%;animation:flowg 8s linear infinite alternate}
+@keyframes flowg{to{background-position:100% 0}}
+.hero-bg{position:relative;overflow:clip;isolation:isolate}
+.hero-bg>header.hero{position:relative;z-index:1}
+.hero-bg>canvas.fx{position:absolute;inset:0;width:100%;height:100%;z-index:0;cursor:default}
+.pill{border-radius:8px!important;border:1px dashed var(--accent)!important}
+.btn{border-radius:10px!important;transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-3px)}
+.btn.primary{position:relative;overflow:hidden}
+.btn.primary::after{content:'';position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.4) 50%,transparent 70%);transform:translateX(-120%);animation:sh 4s ease-in-out infinite}
+@keyframes sh{40%,100%{transform:translateX(120%)}}
+.card,.chip,.step,.ex>*{transition:transform .25s,border-color .25s,box-shadow .25s}
+.card:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 20px 40px -22px var(--accent)}
+.chip{border-radius:8px!important;position:relative}
+.chip::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent2);margin-inline-end:7px;animation:pls 2s ease-in-out infinite}
+@keyframes pls{50%{transform:scale(1.6);opacity:.5}}
+h2::before{content:'';display:block;width:56px;height:10px;margin:0 auto 14px;background:radial-gradient(circle at 5px 5px,var(--accent) 4px,transparent 5px) 0 0/28px 10px repeat-x}
+.shot{box-shadow:0 0 0 1px var(--line),0 40px 90px -30px var(--accent)!important}
+@media(prefers-reduced-motion:reduce){h1 .grad,.btn.primary::after,.chip::before{animation:none}}
