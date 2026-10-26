@@ -6,6 +6,11 @@ project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- `daily-report-jalali` example: a daily website check with a Persian Telegram
+  report, Tehran-local Jalali date and Persian digits.
+
 ## [0.1.0] - 2026-10-08
 
 First public release.

@@ -155,10 +155,18 @@ All in [`examples/workflows`](examples/workflows) — run `flowpilot -p examples
 | [`github-release-watcher`](examples/workflows/github-release-watcher.yaml) | cron | Announces each new GitHub release exactly once (persistent state) |
 | [`uptime-monitor`](examples/workflows/uptime-monitor.yaml) | interval | Alerts only when a site goes **down** or **recovers** |
 | [`crypto-digest`](examples/workflows/crypto-digest.yaml) | cron 09:00 Asia/Tehran | Crypto prices (CoinGecko) + USD exchange rates, with the Jalali date |
+| [`daily-report-jalali`](examples/workflows/daily-report-jalali.yaml) | cron 09:00 Asia/Tehran | Website HTTP check → Persian Telegram report with the Jalali date |
 | [`rss-to-telegram`](examples/workflows/rss-to-telegram.yaml) | feed | One channel post per new feed entry, cleaned by a custom plugin step |
 | [`nightly-backup`](examples/workflows/nightly-backup.yaml) | cron | `tar.gz` backup with 7-day retention, uploaded to Telegram, alert on failure |
 | [`contact-form`](examples/workflows/contact-form.yaml) | webhook + secret | Website contact form → Telegram |
 | [`disk_space.py`](examples/workflows/disk_space.py) | cron | A workflow **written in Python** with its own custom step |
+
+To try `daily-report-jalali`, copy `examples/.env.example` to `examples/.env` and set
+`TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`. Edit `vars.url` in the workflow to
+choose the website, then run `flowpilot -p examples run daily-report-jalali`.
+Use `flowpilot -p examples serve` to enable its daily 09:00 `Asia/Tehran` schedule.
+The report includes HTTP errors such as 503; network failures or timeouts fail
+the run. The Jalali date uses Tehran time and Persian digits.
 
 ## 🏗 Architecture
 
