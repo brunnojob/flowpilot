@@ -1,4 +1,8 @@
-"""Shared fixtures: temp-dir Settings, an isolated step registry, an Engine whose sleeps are recorded instead of waited, and workflow factories."""
+"""Shared fixtures: temp-dir Settings, an isolated step registry, an Engine whose sleeps are
+
+recorded instead of waited, and workflow factories.
+"""
+
 from __future__ import annotations
 
 import asyncio

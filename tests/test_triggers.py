@@ -1,4 +1,8 @@
-"""Triggers: cron time maths, the cron/interval/file/feed runners, and the trigger manager (sync, restart of crashed runners)."""
+"""Triggers: cron time maths, the cron/interval/file/feed runners, and the trigger manager (sync,
+
+restart of crashed runners).
+"""
+
 from __future__ import annotations
 
 import asyncio

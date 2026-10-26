@@ -1,4 +1,5 @@
 """Pydantic workflow models: defaults, trigger shorthands and validation, step options."""
+
 from __future__ import annotations
 
 import pytest

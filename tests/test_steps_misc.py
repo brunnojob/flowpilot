@@ -1,4 +1,8 @@
-"""Built-in steps other than http and telegram: transform, log, delay, python, shell, file, sqlite, state, archive and email."""
+"""Built-in steps other than http and telegram: transform, log, delay, python, shell, file, sqlite,
+
+state, archive and email.
+"""
+
 from __future__ import annotations
 
 import sqlite3

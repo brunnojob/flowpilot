@@ -1,4 +1,5 @@
 """The telegram step against a mocked Bot API: messages, splitting long text, documents."""
+
 from __future__ import annotations
 
 import json

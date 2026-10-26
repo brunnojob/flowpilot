@@ -1,4 +1,8 @@
-"""Template rendering: native values for single expressions, string templates, recursion, and error cases."""
+"""Template rendering: native values for single expressions, string templates, recursion, and error
+
+cases.
+"""
+
 from __future__ import annotations
 
 from datetime import datetime, timezone

@@ -1,4 +1,5 @@
 """Command-line interface: version, init scaffolding, validate, run, list/logs/steps and serve."""
+
 from __future__ import annotations
 
 import json

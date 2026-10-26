@@ -1,4 +1,8 @@
-"""Workflow engine: sequential steps and templating, conditions, retries and backoff, timeouts, failure handling, and run/log persistence."""
+"""Workflow engine: sequential steps and templating, conditions, retries and backoff, timeouts,
+
+failure handling, and run/log persistence.
+"""
+
 from __future__ import annotations
 
 import asyncio

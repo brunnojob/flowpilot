@@ -6,6 +6,11 @@ project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Wrap test module docstrings and separate them from future imports so the
+  repository passes Ruff lint and format checks.
+
 ## [0.1.0] - 2026-10-08
 
 First public release.

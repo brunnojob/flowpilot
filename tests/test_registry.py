@@ -1,4 +1,8 @@
-"""Step registry: registering sync/async steps, introspecting parameters, duplicate and invalid registrations."""
+"""Step registry: registering sync/async steps, introspecting parameters, duplicate and invalid
+
+registrations.
+"""
+
 from __future__ import annotations
 
 import logging
