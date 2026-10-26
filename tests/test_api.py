@@ -1,3 +1,4 @@
+"""HTTP API and dashboard: health/info/stats, workflow listing, running with wait, run history and error responses."""
 from __future__ import annotations
 
 import hashlib
